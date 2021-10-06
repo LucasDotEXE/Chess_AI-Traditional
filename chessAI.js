@@ -89,17 +89,28 @@ var ChessAI = function(game) {
         
 
         sortedMoves = e;
-        sortedMoves += c;
-        sortedMoves += p;
-        sortedMoves += k;
-        sortedMoves += q;
-        sortedMoves += n;
-        sortedMoves += b;
+        sortedMoves += ',' + c;
+        sortedMoves += ',' + p;
+        sortedMoves += ',' + k;
+        sortedMoves += ',' + q;
+        sortedMoves += ',' + n;
+        sortedMoves += ',' + b;
 
-        sortedMoves = sortedMoves.toString().split(',');
+        sortedMoves = cleanArray(sortedMoves.toString().split(','));
+        
 
         return sortedMoves;
     }
+
+    function cleanArray(actual) {
+        var newArray = new Array();
+        for (var i = 0; i < actual.length; i++) {
+          if (actual[i]) {
+            newArray.push(actual[i]);
+          }
+        }
+        return newArray;
+      }
 
     function evaluateBoard() {
         var totalEval = 0;
@@ -312,7 +323,7 @@ var ChessAI = function(game) {
                 var bestMoveMinMaxAlpha = evaluateCalculation(MinMaxAlphaBetaRoot, [depth], "Alpha Beta");
                 var bestMoveMinMaxAlphaSortedList = evaluateCalculation(MinMaxAlphaBetaSortedListRoot, [depth], "Sorted List");
 
-
+                
 
                 game.move(bestMoveMinMaxAlphaSortedList);
                 board.position(game.fen());
@@ -322,7 +333,8 @@ var ChessAI = function(game) {
                 var fen = game.fen();
 
                 // var bestMoveMinMaxAlpha = evaluateCalculation(MinMaxAlphaBetaRoot, [4], "Alpha Beta");
-                var bestMoveMinMaxAlphaSortedList = evaluateCalculation(MinMaxAlphaBetaSortedListRoot, [5], "Sorted List");
+                var bestMoveMinMaxAlphaSortedList = evaluateCalculation(MinMaxAlphaBetaSortedListRoot, [4], "Sorted List");
+                console.log(getAllOrderedMoves());
                 game.load(fen);
                 game.move(bestMoveMinMaxAlphaSortedList);
                 board.position(game.fen());
